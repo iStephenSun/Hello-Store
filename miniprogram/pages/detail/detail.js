@@ -5,13 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    product:{
-      id:2,
-      image: 'https://product-1256088332.cos.ap-guangzhou.myqcloud.com/product2.jpg',
-      name: 'Guitar',
-      price: 480.50,
-      source: 'SWEDEN'
-    }
+    product:{},
 
   },
 
@@ -19,65 +13,39 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // add(5,6)
-    wx.cloud.callFunction({
-      name:"add",
-      data:{
-        a: 5,
-        b:7
-      },
-      success(res){
-        console.log(res.result)
-      }
+    wx.showLoading({
+      title: 'Loading...',
     })
-  },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
+    wx.cloud.callFunction({
+      name:'productDetail',
+      data:{
+        id: options.id
+      },
+    }).then(result => {
+      wx.hideLoading()
+      const data = result.result
 
-  },
+      if(data){
+        this.setData({
+          product:data
+        })
+      }
+      else {
+        setTimeout(()=>{
+          wx.navigateBack()
+        },2000)
+      }
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
+    }).catch(err => {
+      console.error(err)
+      wx.hideLoading()
 
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
+      setTimeout(() => {
+        wx.navigateBack()
+      }, 2000)
+    })
 
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })
