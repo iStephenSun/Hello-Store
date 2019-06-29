@@ -19,7 +19,17 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    // add(5,6)
+    wx.cloud.callFunction({
+      name:"add",
+      data:{
+        a: 5,
+        b:7
+      },
+      success(res){
+        console.log(res.result)
+      }
+    })
   },
 
   /**
