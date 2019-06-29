@@ -1,8 +1,11 @@
 // miniprogram/pages/home/home.js
 
-const db = wx.cloud.database({
-  env: 'neo-kmh3o'
-})
+const db = require("../../utils/db.js")
+const util = require('../../utils/util.js')
+
+// const db = wx.cloud.database({
+//   env: 'neo-kmh3o'
+// })
 Page({
 
   /**
@@ -25,17 +28,17 @@ Page({
     wx.showLoading({
       title: 'Loading',
     })
-    db.collection('product').get().then(result => {
+    db.getProductList().then(result => {
       console.log(result)
       wx.hideLoading()
     
-      const data = result.data
+      const productList = result.data
       // 2 digits for price
-      data.forEach(product => product.price = parseFloat(Math.round(product.price * 100)/100) .toFixed(2))
+      productList.forEach(product => product.price = util.formatPrice(product.price))
 
-      if (data.length){
+      if (productList.length){
         this.setData({
-          productList:data
+          productList: productList
         })
       }
     }).catch(err =>{

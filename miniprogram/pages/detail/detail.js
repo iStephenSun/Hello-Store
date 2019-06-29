@@ -1,4 +1,7 @@
 // miniprogram/pages/detail/detail.js
+
+const db = require("../../utils/db.js")
+const util = require('../../utils/util.js')
 Page({
 
   /**
@@ -13,28 +16,27 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getProductDetail(options.id)
+
+  },
+
+  getProductDetail(id) {
     wx.showLoading({
       title: 'Loading...',
     })
-
-    wx.cloud.callFunction({
-      name:'productDetail',
-      data:{
-        id: options.id
-      },
-    }).then(result => {
+    db.getProductDetail(id).then(result => {
       wx.hideLoading()
       const data = result.result
-
-      if(data){
+      data.price = util.formatPrice(data.price)
+      if (data) {
         this.setData({
-          product:data
+          product: data
         })
       }
       else {
-        setTimeout(()=>{
+        setTimeout(() => {
           wx.navigateBack()
-        },2000)
+        }, 2000)
       }
 
     }).catch(err => {
@@ -45,7 +47,6 @@ Page({
         wx.navigateBack()
       }, 2000)
     })
-
-  },
+  }
 
 })
