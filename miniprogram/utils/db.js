@@ -19,6 +19,13 @@ module.exports = {
         id : id
       }
     })
+  },
+
+  addToOrder(data) {
+    return wx.cloud.callFunction({
+      name:"addToOrder",
+      data
+    })
   }
 
   

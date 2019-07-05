@@ -1,6 +1,7 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
 
+// cloud.init()//place first location
 cloud.init({
   traceUser: true,
   env: 'neo-kmh3o'

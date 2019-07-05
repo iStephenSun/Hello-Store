@@ -47,6 +47,38 @@ Page({
         wx.navigateBack()
       }, 2000)
     })
+  },
+  buy(){
+    wx.showLoading({
+      title: 'Purchasing... ',
+    })
+
+    const productToBuy = Object.assign({
+      count:1},this.data.product)
+    productToBuy.productId = productToBuy._id
+    
+    db.addToOrder({
+      list:[productToBuy]
+    }).then(result => {
+      wx.hideLoading()
+
+      const data = result.result
+
+      if(data){
+        wx.showToast({
+          title: 'Succeed!',
+        })
+      }
+    }).catch(err => {
+      console.error(err)
+      wx.hideLoading()
+
+      wx.showToast({
+        icon:'none',
+        title: 'Faied!',
+      })
+    })
+
   }
 
 })
