@@ -3,12 +3,12 @@
 
 
 const cloud = require('wx-server-sdk')
-// cloud.init()// location matters
+cloud.init()// location matters
 
-cloud.init({
-  traceUser: true,
-  env: 'neo-kmh3o'
-})
+// cloud.init({
+//   traceUser: true,
+//   env: 'neo-kmh3o'
+// })
 const db = cloud.database()
 
 
